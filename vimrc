@@ -168,8 +168,8 @@ function! s:Median(nums)
 endfunction
 
 "indent settings
-set shiftwidth=4
-set softtabstop=4
+set shiftwidth=2
+set softtabstop=2
 set expandtab
 set autoindent
 
@@ -212,7 +212,7 @@ if has("gui_running")
 		set t_Co=256
 
     if has("gui_gnome")
-        set term=gnome-256color
+        "set term=builtin_gui
         colorscheme desert
     else
         colorscheme vibrantink
@@ -225,10 +225,10 @@ if has("gui_running")
     endif
     if has("gui_win32") || has("gui_win32s")
         set guifont=Consolas:h12
-				set enc=utf-8
+        set enc=utf-8
     endif
 else
-		"dont load csapprox if we no gui support - silences an annoying warning
+    "dont load csapprox if we no gui support - silences an annoying warning
     let g:CSApprox_loaded = 1
 endif
 
