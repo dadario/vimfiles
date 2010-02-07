@@ -2,6 +2,9 @@
 "This must be first, because it changes other options as a side effect.
 set nocompatible
 
+"leader character
+let mapleader=","
+
 "allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
@@ -184,7 +187,7 @@ set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 
 "display tabs and trailing spaces
 set list
-set listchars=tab:\ \ ,extends:>,precedes:<
+set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
 
 set formatoptions-=o "dont continue comments when pushing o/O
 
@@ -192,6 +195,12 @@ set formatoptions-=o "dont continue comments when pushing o/O
 set scrolloff=3
 set sidescrolloff=7
 set sidescroll=1
+
+" display cursor line and column
+set cursorline
+set cursorcolumn
+" toogle cursor column
+nmap <leader>cuc :set invcuc <CR>
 
 "load ftplugins and indent files
 filetype plugin on
@@ -213,7 +222,7 @@ if has("gui_running")
 
     if has("gui_gnome")
         "set term=builtin_gui
-        colorscheme desert
+        colorscheme railscasts
     else
         colorscheme vibrantink
         set guitablabel=%M%t
@@ -232,7 +241,26 @@ else
     let g:CSApprox_loaded = 1
 endif
 
-nmap <silent> <Leader>p :NERDTreeToggle<CR>
+"NERDTree configuration
+map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
+map <leader>dd :NERDTreeMirror<CR>
+let NERDTreeCaseSensitiveSort = 1
+let NERDTreeChDirMode = 2
+let NERDTreeIgnore = ['\~$','\.[ao]$','\.swp$','\.DS_Store','\.svn','\.CVS','\.git','\.pyc','\.pyo','\log','\tmp','\vendor','\coverage']
+let NERDTreeMouseMode = 2
+let NERDTreeShowLineNumbers = 0
+let NERDTreeWinSize = 30
+let NERDTreeHijackNetrw = 1
+
+"save using <c-s> as any other editor
+map <c-s> <Esc>:w<CR>
+imap <c-s> <Esc>:w<CR>
+
+"remove trailing spaces
+nmap <leader>remove :%s/\s*$//g<CR>
+
+"dos2 to *nix
+nmap <leader>unix :%s/\r$//<CR>
 
 "make <c-l> clear the highlight as well as redraw
 nnoremap <C-L> :nohls<CR><C-L>
@@ -249,6 +277,18 @@ noremap Q gq
 
 "make Y consistent with C and D
 nnoremap Y y$
+
+"tabs and buffers
+map <silent><A-Right> :tabnext<CR>
+map <silent><A-Left> :tabprevious<CR>
+nnoremap <silent><C-n> :tabnext<CR>
+nnoremap <silent><C-p> :tabprevious<CR>
+nnoremap <silent><C-t> :tabnew<CR>
+noremap <C-j> :bprev<CR>
+noremap <C-k> :bnext<CR>
+
+let g:buftabs_only_basename=1
+let g:buftabs_in_statusline=1
 
 "mark syntax errors with :signs
 let g:syntastic_enable_signs=1
