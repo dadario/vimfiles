@@ -347,3 +347,6 @@ function! s:HighlightLongLines(width)
         echomsg "Usage: HighlightLongLines [natural number]"
     endif
 endfunction
+
+"check ruby syntax on save
+autocmd BufWritePost *.rb !ruby -c %
