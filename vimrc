@@ -1,3 +1,7 @@
+"We need no stinking menu and no toolbar
+set guioptions-=m
+set guioptions-=T
+
 "Use Vim settings, rather then Vi settings (much better!).
 "This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -217,14 +221,14 @@ set ttymouse=xterm2
 set hidden
 
 if has("gui_running")
-		"tell the term has 256 colors
-		set t_Co=256
+    "tell the term has 256 colors
+    set t_Co=256
 
     if has("gui_gnome")
         "set term=builtin_gui
         colorscheme railscasts
     else
-        colorscheme vibrantink
+        colorscheme railscasts
         set guitablabel=%M%t
         set lines=40
         set columns=115
