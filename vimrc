@@ -1,10 +1,16 @@
-"We need no stinking menu and no toolbar
-set guioptions-=m
-set guioptions-=T
+"necessary on some Linux distros for pathogen to properly load bundles
+filetype off
+
+"load pathogen managed plugins
+call pathogen#runtime_append_all_bundles()
 
 "Use Vim settings, rather then Vi settings (much better!).
 "This must be first, because it changes other options as a side effect.
 set nocompatible
+
+"We need no stinking menu and no toolbar
+set guioptions-=m
+set guioptions-=T
 
 "leader character
 let mapleader=","
@@ -21,51 +27,87 @@ set showmode    "show current mode down the bottom
 set incsearch   "find the next match as we type the search
 set hlsearch    "hilight searches by default
 
-set nowrap      "dont wrap lines
-set linebreak   "wrap lines at convenient points
+set relativenumber      "add line numbers
+set showbreak=...
+set wrap linebreak nolist
+
+"mapping for command key to map navigation thru display lines instead
+"of just numbered lines
+vmap <D-j> gj
+vmap <D-k> gk
+vmap <D-4> g$
+vmap <D-6> g^
+vmap <D-0> g^
+nmap <D-j> gj
+nmap <D-k> gk
+nmap <D-4> g$
+nmap <D-6> g^
+nmap <D-0> g^
+
+"add some line space for easy reading
+set linespace=4
+
+"disable visual bell
+set visualbell t_vb=
+
+"try to make possible to navigate within lines of wrapped lines
+nmap <Down> gj
+nmap <Up> gk
+set fo=l
 
 "statusline setup
 set statusline=%f       "tail of the filename
 
+"Git
+set statusline+=[%{GitBranch()}]
+
+"RVM
+set statusline+=%{exists('g:loaded_rvm')?rvm#statusline():''}
+
 "display a warning if fileformat isnt unix
-set statusline+=%#warningmsg#
-set statusline+=%{&ff!='unix'?'['.&ff.']':''}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{&ff!='unix'?'['.&ff.']':''}
+"set statusline+=%*
 
-"display a warning if file encoding isnt utf-8
-set statusline+=%#warningmsg#
-set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
-set statusline+=%*
+"Display a warning if file encoding isnt utf-8
+"set statusline+=%#warningmsg#
+"set statusline+=%{(&fenc!='utf-8'&&&fenc!='')?'['.&fenc.']':''}
+"set statusline+=%*
 
-set statusline+=%h      "help file flag
-set statusline+=%y      "filetype
-set statusline+=%r      "read only flag
-set statusline+=%m      "modified flag
+"set statusline+=%h      "help file flag
+"set statusline+=%y      "filetype
+"set statusline+=%r      "read only flag
+"set statusline+=%m      "modified flag
 
 "display a warning if &et is wrong, or we have mixed-indenting
-set statusline+=%#error#
-set statusline+=%{StatuslineTabWarning()}
-set statusline+=%*
-
-set statusline+=%{StatuslineTrailingSpaceWarning()}
-
-set statusline+=%{StatuslineLongLineWarning()}
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#error#
+"set statusline+=%{StatuslineTabWarning()}
+"set statusline+=%*
+"
+"set statusline+=%{StatuslineTrailingSpaceWarning()}
+"
+"set statusline+=%{StatuslineLongLineWarning()}
+"
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
 "display a warning if &paste is set
-set statusline+=%#error#
-set statusline+=%{&paste?'[paste]':''}
-set statusline+=%*
+"set statusline+=%#error#
+"set statusline+=%{&paste?'[paste]':''}
+"set statusline+=%*
 
 set statusline+=%=      "left/right separator
-set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+
+"set statusline+=%{StatuslineCurrentHighlight()}\ \ "current highlight
+
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file
 set laststatus=2
+
+"turn off needless toolbar on gvim/mvim
+set guioptions-=T
 
 "recalculate the trailing whitespace warning when idle, and after saving
 autocmd cursorhold,bufwritepost * unlet! b:statusline_trailing_space_warning
@@ -190,8 +232,9 @@ set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 
 "display tabs and trailing spaces
-set list
-set listchars=tab:▷⋅,trail:⋅,nbsp:⋅
+"set list
+"set listchars=tab:\ \ ,extends:>,precedes:<
+" disabling list because it interferes with soft wrap
 
 set formatoptions-=o "dont continue comments when pushing o/O
 
@@ -220,28 +263,45 @@ set ttymouse=xterm2
 "hide buffers when not displayed
 set hidden
 
+"Command-T configuration
+let g:CommandTMaxHeight=10
+let g:CommandTMatchWindowAtTop=1
+
 if has("gui_running")
     "tell the term has 256 colors
     set t_Co=256
 
+    colorscheme railscasts
+    set guitablabel=%M%t
+    set lines=40
+    set columns=115
+
     if has("gui_gnome")
-        "set term=builtin_gui
-        colorscheme railscasts
-    else
-        colorscheme railscasts
-        set guitablabel=%M%t
-        set lines=40
-        set columns=115
+        set term=gnome-256color
+        colorscheme ir_dark
+        set guifont=Inconsolata\ Medium\ 12
     endif
+
     if has("gui_mac") || has("gui_macvim")
-        set guifont=Menlo:h15
+        set guifont=Menlo:h14
+        " key binding for Command-T to behave properly
+        " uncomment to replace the Mac Command-T key to Command-T plugin
+        "macmenu &File.New\ Tab key=<nop>
+        "map <D-t> :CommandT<CR>
+        " make Mac's Option key behave as the Meta key
+        set invmmta
+        try
+          set transparency=5
+        catch
+        endtry
     endif
+
     if has("gui_win32") || has("gui_win32s")
         set guifont=Consolas:h12
         set enc=utf-8
     endif
 else
-    "dont load csapprox if we no gui support - silences an annoying warning
+    "dont load csapprox if there is no gui support - silences an annoying warning
     let g:CSApprox_loaded = 1
     if $COLORTERM == 'gnome-terminal'
       set term=gnome-256color
@@ -251,16 +311,12 @@ else
     endif
 endif
 
-"NERDTree configuration
-map <leader>d :execute 'NERDTreeToggle ' . getcwd()<CR>
-map <leader>dd :NERDTreeMirror<CR>
-let NERDTreeCaseSensitiveSort = 1
-let NERDTreeChDirMode = 2
-let NERDTreeIgnore = ['\~$','\.[ao]$','\.swp$','\.DS_Store','\.svn','\.CVS','\.git','\.pyc','\.pyo','\log','\tmp','\vendor','\coverage']
-let NERDTreeMouseMode = 2
-let NERDTreeShowLineNumbers = 0
-let NERDTreeWinSize = 30
-let NERDTreeHijackNetrw = 1
+" PeepOpen uses <Leader>p as well so you will need to redefine it so something
+" else in your ~/.vimrc file, such as:
+" nmap <silent> <Leader>q <Plug>PeepOpen
+
+silent! nmap <silent> <Leader>p :NERDTreeToggle<CR>
+nnoremap <silent> <C-f> :call FindInNERDTree()<CR> 
 
 "save using <c-s> as any other editor
 map <c-s> <Esc>:w<CR>
@@ -277,10 +333,10 @@ nnoremap <C-L> :nohls<CR><C-L>
 inoremap <C-L> <C-O>:nohls<CR>
 
 "map to bufexplorer
-nnoremap <C-B> :BufExplorer<cr>
+nnoremap <leader>b :BufExplorer<cr>
 
-"map to fuzzy finder text mate stylez
-nnoremap <c-f> :FuzzyFinderTextMate<CR>
+"map to CommandT TextMate style finder
+nnoremap <leader>t :CommandT<CR>
 
 "map Q to something useful
 noremap Q gq
@@ -299,15 +355,26 @@ noremap <C-k> :bnext<CR>
 
 let g:buftabs_only_basename=1
 let g:buftabs_in_statusline=1
+"
+"bindings for ragtag
+inoremap <M-o>       <Esc>o
+inoremap <C-j>       <Down>
+let g:ragtag_global_maps = 1
 
 "mark syntax errors with :signs
 let g:syntastic_enable_signs=1
+
+"key mapping for vimgrep result navigation
+map <A-o> :copen<CR>
+map <A-q> :cclose<CR>
+map <A-j> :cnext<CR>
+map <A-k> :cprevious<CR>
 
 "snipmate setup
 try
   source ~/.vim/snippets/support_functions.vim
 catch
-  source $HOMEPATH\vimfiles\snippets\support_functions.vim
+  source ~/vimfiles/snippets/support_functions.vim
 endtry
 autocmd vimenter * call s:SetupSnippets()
 function! s:SetupSnippets()
@@ -357,6 +424,18 @@ function! s:HighlightLongLines(width)
         echomsg "Usage: HighlightLongLines [natural number]"
     endif
 endfunction
+
+"key mapping for tab navigation
+nmap <Tab> gt
+nmap <S-Tab> gT
+
+"Key mapping for textmate-like indentation
+nmap <D-[> <<
+nmap <D-]> >>
+vmap <D-[> <gv
+vmap <D-]> >gv
+
+let ScreenShot = {'Icon':0, 'Credits':0, 'force_background':'#FFFFFF'} 
 
 "check ruby syntax on save
 autocmd BufWritePost *.rb !ruby -c %
