@@ -274,7 +274,7 @@ if has("gui_running")
     colorscheme railscasts
     set guitablabel=%M%t
     set lines=40
-    set columns=115
+    set columns=120
 
     if has("gui_gnome")
         set term=gnome-256color
@@ -305,7 +305,7 @@ else
     let g:CSApprox_loaded = 1
     if $COLORTERM == 'gnome-terminal'
       set term=gnome-256color
-      colorscheme railscasts
+      colorscheme railscasts2
     else
       colorscheme default
     endif
