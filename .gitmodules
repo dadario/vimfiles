@@ -72,4 +72,7 @@
 	url = git://github.com/ervandew/supertab.git
 [submodule "bundle/vim-ruby-sinatra"]
 	path = bundle/vim-ruby-sinatra
-	url = git://github.com/hallison/vim-ruby-sinatra.git
+  url = git://github.com/hallison/vim-ruby-sinatra.git
+[submodule "bundle/vividchalk"]
+  path = bundle/vividchalk
+  url = https://github.com/tpope/vim-vividchalk.git
