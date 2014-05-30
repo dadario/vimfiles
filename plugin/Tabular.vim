@@ -1,0 +1,1 @@
+../bundle/tabular/plugin/Tabular.vim
