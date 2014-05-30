@@ -271,14 +271,17 @@ if has("gui_running")
     "tell the term has 256 colors
     set t_Co=256
 
-    colorscheme railscasts
+    set background=dark
+    colorscheme solarized
+    "colorscheme railscasts
     set guitablabel=%M%t
     set lines=40
     set columns=120
 
     if has("gui_gnome")
         set term=gnome-256color
-        colorscheme ir_dark
+        colorscheme solarized
+        "colorscheme ir_dark
         set guifont=Inconsolata\ Medium\ 12
     endif
 
@@ -305,6 +308,9 @@ else
     let g:CSApprox_loaded = 1
     if $COLORTERM == 'gnome-terminal'
       set term=gnome-256color
+      set background=dark
+      let g:solarized_termcolors=256
+      "colorscheme solarized
       colorscheme railscasts2
     else
       colorscheme default
@@ -439,3 +445,5 @@ let ScreenShot = {'Icon':0, 'Credits':0, 'force_background':'#FFFFFF'}
 
 "check ruby syntax on save
 autocmd BufWritePost *.rb !ruby -c %
+
+call togglebg#map("<F5>")
