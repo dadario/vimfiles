@@ -1,5 +1,5 @@
 "Font and color
-set guifont=Courier\ 10\ Pitch\ 10
+set guifont=Hack\ 12
 set antialias
 
 " We don't need no stinkin' toolbar!
