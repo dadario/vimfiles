@@ -279,10 +279,10 @@ if has("gui_running")
     set columns=120
 
     if has("gui_gnome")
-        set term=gnome-256color
-        colorscheme solarized
-        "colorscheme ir_dark
-        set guifont=Inconsolata\ Medium\ 12
+      set term=gnome-256color
+      colorscheme solarized
+      "colorscheme ir_dark
+      set guifont=Inconsolata\ Medium\ 12
     endif
 
     if has("gui_mac") || has("gui_macvim")
