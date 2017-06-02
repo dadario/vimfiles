@@ -1,0 +1,29 @@
+alias bex='bundle exec'
+alias bi='bundle install'
+alias tm='tmux new-session -s note-vagas'
+alias sshdev='ssh -l deploy-user'
+
+PROJECTS_DIR="$HOME/Workspaces/vagas"
+
+_goproject() {
+  local cur prev opts
+  opts=`ls -o --time-style="long-iso" $PROJECTS_DIR | egrep '^d' | awk '{print $7}'`
+
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+  if [[ ${cur} == * ]]; then
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}))
+    return 0
+  fi  
+}
+
+function goproject {
+  cd "$PROJECTS_DIR/$1" 
+}
+
+complete -F _goproject goproject
+
+# Alias docker to simplify commands
+source ~/.bash_alias_docker
