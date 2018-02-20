@@ -83,8 +83,12 @@
   path = bundle/tabular
   url = git@github.com:godlygeek/tabular.git
 [submodule "bundle/nerdtree-git-plugin"]
-	path = bundle/nerdtree-git-plugin
-	url = git@github.com:Xuyuanp/nerdtree-git-plugin.git
+  path = bundle/nerdtree-git-plugin
+  url = git@github.com:Xuyuanp/nerdtree-git-plugin.git
 [submodule "bundle/Dockerfile"]
-	path = bundle/Dockerfile
-	url = git@github.com:ekalinin/Dockerfile.vim.git
+  path = bundle/Dockerfile
+  url = git@github.com:ekalinin/Dockerfile.vim.git
+[submodule "bundle/vim-elixir"]
+  path = bundle/vim-elixir
+  url = git@github.com:elixir-lang/vim-elixir.git
+
